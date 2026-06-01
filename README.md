@@ -1,4 +1,4 @@
-# SQLGenie 🧙
+# SQLGenie
 
 Convert natural language questions into SQL queries using Amazon Bedrock. Includes a safety layer that blocks destructive queries and returns only SELECT statements.
 
