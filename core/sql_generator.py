@@ -34,7 +34,7 @@ def is_safe_query(sql):
 
     statement = statements[0]
     for keyword in DANGEROUS_KEYWORDS:
-        if re.search(rf"\\b{keyword}\\b", statement):
+        if re.search(rf"\b{keyword}\b", statement):
             return False, f"Unsafe keyword: {keyword}"
     if not statement.startswith("SELECT"):
         return False, "Only SELECT queries are allowed"
