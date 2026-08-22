@@ -26,13 +26,18 @@ SAMPLE_SCHEMAS = {
 
 
 def is_safe_query(sql):
-    """Check if SQL is read-only (SELECT only)."""
+    """Check that SQL contains exactly one read-only SELECT statement."""
     sql_upper = sql.upper().strip()
+    statements = [part.strip() for part in sql_upper.split(";") if part.strip()]
+    if len(statements) != 1:
+        return False, "Multiple SQL statements are not allowed"
+
+    statement = statements[0]
     for keyword in DANGEROUS_KEYWORDS:
-        if keyword in sql_upper:
-            return False, f'Unsafe keyword: {keyword}'
-    if not sql_upper.startswith('SELECT'):
-        return False, 'Only SELECT queries are allowed'
+        if re.search(rf"\\b{keyword}\\b", statement):
+            return False, f"Unsafe keyword: {keyword}"
+    if not statement.startswith("SELECT"):
+        return False, "Only SELECT queries are allowed"
     return True, None
 
 
